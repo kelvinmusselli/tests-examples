@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable no-use-before-define */
+import React, { useEffect, useState } from 'react';
 
 function App() {
+
+  const [hello, setHello] = useState('');
+  const [user, setUser] = useState('')
+
+  const openHello = async (e) => {
+    e.preventDefault();
+    setHello('Hello')
+    const response = await fetch('https://api.github.com/users/kelvinmusselli');
+    const json = await response.json();
+    setUser(json.name);
+  }
+
+  useEffect(()=>{
+    if(hello && user) {
+      console.log(hello);
+      console.log(user);
+    }
+  },[hello, user]);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form onSubmit={openHello}>
+      <button type="submit">Olá</button>
+      <p>{hello}, {user}</p>
+
+    </form>
   );
 }
 
